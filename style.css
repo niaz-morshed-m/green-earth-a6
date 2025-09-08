@@ -1,0 +1,15 @@
+.inter-font{
+    font-family: "Inter", sans-serif;
+}
+
+/* linear-gradient(
+                  rgba(0, 0, 0, 0.025),
+                  rgba(0, 0, 0, 0.272)
+                ), */
+.banner{
+    background-image:  url('./assets/hero-leaf1.png'), url('./assets/hero-leaf2.png') ;
+    
+    background-repeat: no-repeat;
+    background-size: 30%;
+    background-position: bottom left, bottom right;
+}
