@@ -1,65 +1,66 @@
+// categories load
+const categoriesLoad = () => {
+  spinner(true);
+  const url = "https://openapi.programming-hero.com/api/categories";
 
-const categoriesLoad = ()=>{
-  spinner(true)
-const url = "https://openapi.programming-hero.com/api/categories";
+  fetch(url)
+    .then((res) => res.json())
+    .then((json) => displayCategories(json.categories));
+};
 
-fetch(url)
-.then(res=> res.json())
-.then(json=> displayCategories(json.categories))
-}
-
+// remove active button
 const removeActive = () => {
   const catBtn = document.querySelectorAll(".cat-btn");
 
-  for(const btn of catBtn){
-    btn.classList.remove('active1')
+  for (const btn of catBtn) {
+    btn.classList.remove("active1");
   }
-  
 };
 
-const spinner = (status)=>{
+// spinner function
+const spinner = (status) => {
   const spinner = document.getElementById("spinner");
   const mainContainer = document.getElementById("main-container");
-  if(status==true){
-spinner.classList.remove('hidden')
-mainContainer.classList.add('hidden')
-  }
-  else{
-    spinner.classList.add('hidden')
-    mainContainer.classList.remove('hidden')
-  }
-}
-
-const displayCategories = (categories) => {
-   const categoriesContainer = document.getElementById("categories-container");
-  for(const category of categories){
-    const ul = document.createElement('ul')
-    ul.innerHTML = `<li id="cat-btn-${category.id}" onclick="loadByCategory(${category.id})" class="cat-btn"><a>${category.category_name}</a></li>`;
-    categoriesContainer.appendChild(ul)
-    spinner(false)
+  if (status == true) {
+    spinner.classList.remove("hidden");
+    mainContainer.classList.add("hidden");
+  } else {
+    spinner.classList.add("hidden");
+    mainContainer.classList.remove("hidden");
   }
 };
 
-const loadAllPlants = ()=> {
-  spinner(true)
+// display categories function
+const displayCategories = (categories) => {
+  const categoriesContainer = document.getElementById("categories-container");
+  for (const category of categories) {
+    const ul = document.createElement("ul");
+    ul.innerHTML = `<li id="cat-btn-${category.id}" onclick="loadByCategory(${category.id})" class="cat-btn"><a>${category.category_name}</a></li>`;
+    categoriesContainer.appendChild(ul);
+    spinner(false);
+  }
+};
+
+// load all plants
+const loadAllPlants = () => {
+  spinner(true);
   const url = "https://openapi.programming-hero.com/api/plants";
   fetch(url)
     .then((res) => res.json())
-    .then((data) =>{ 
-      displayAllPlants(data.plants)
+    .then((data) => {
+      displayAllPlants(data.plants);
+    });
+};
 
-    }); 
+// cart tray
 
-}
 let i = 1;
 const cart = (name, price) => {
- 
- 
-const  priceInt = parseInt(price)
-let currentPrice = priceInt
-const cartParent = document.getElementById("cart-parent");
-const cartTray = document.createElement('div')
-cartTray.innerHTML = `
+  const priceInt = parseInt(price);
+  let currentPrice = priceInt;
+  const cartParent = document.getElementById("cart-parent");
+  const cartTray = document.createElement("div");
+  cartTray.innerHTML = `
  <div><p class="font-semibold text-[12px]">${name}</p>
   <p class="text-[#1F2937] text-[12px]">৳${price}</p></div>
   
@@ -68,30 +69,44 @@ cartTray.innerHTML = `
   </div>
 `;
 
+  cartTray.classList.add(
+    "flex",
+    "justify-between",
+    "items-center",
+    "p-2",
+    "bg-[#F0FDF4]",
+    "rounded",
+    "mb-3"
+  );
+  cartParent.appendChild(cartTray);
 
-
-cartTray.classList.add('flex', 'justify-between', 'items-center', 'p-2', 'bg-[#F0FDF4]', 'rounded','mb-3')
-cartParent.appendChild(cartTray)
-
-const totalParent = document.getElementById('total')
-let currentTotal = parseInt(totalParent.innerText)
-let total = currentTotal + priceInt;
-
-totalParent.innerText = total
- alert("Your item added to the cart");
-document.getElementById(`clear-${i}`).addEventListener("click", function () {
-  cartTray.innerHTML=""
-  cartTray.classList.remove('flex', 'justify-between', 'items-center', 'p-2', 'bg-[#F0FDF4]', 'rounded','mb-3')
   const totalParent = document.getElementById("total");
   let currentTotal = parseInt(totalParent.innerText);
-  let total = currentTotal - priceInt;
+  let total = currentTotal + priceInt;
 
   totalParent.innerText = total;
-});
+  alert("Your item added to the cart");
+  document.getElementById(`clear-${i}`).addEventListener("click", function () {
+    cartTray.innerHTML = "";
+    cartTray.classList.remove(
+      "flex",
+      "justify-between",
+      "items-center",
+      "p-2",
+      "bg-[#F0FDF4]",
+      "rounded",
+      "mb-3"
+    );
+    const totalParent = document.getElementById("total");
+    let currentTotal = parseInt(totalParent.innerText);
+    let total = currentTotal - priceInt;
 
-i++
+    totalParent.innerText = total;
+  });
 
+  i++;
 
+  // display all plants
 };
 const displayAllPlants = (plants) => {
   const plantsContainer = document.getElementById("plants-container");
@@ -124,36 +139,38 @@ const displayAllPlants = (plants) => {
   }
 };
 
-document.getElementById('all-cat').addEventListener('click',function(){
-  loadAllPlants()
+document.getElementById("all-cat").addEventListener("click", function () {
+  loadAllPlants();
   removeActive();
-  const catBtn = document.getElementById('all-cat');
+  const catBtn = document.getElementById("all-cat");
   catBtn.classList.add("active1");
-  
-  
-})
-const loadByCategory = (id)=>{
-  spinner(true)
+});
+
+// load by category
+const loadByCategory = (id) => {
+  spinner(true);
   const url = `https://openapi.programming-hero.com/api/category/${id}`;
   fetch(url)
     .then((res) => res.json())
-    
+
     .then((data) => {
-       removeActive();
-      displayAllPlants(data.plants)
-    const catBtn = document.getElementById(`cat-btn-${id}`)
-    catBtn.classList.add("active1") 
-    spinner(false)
+      removeActive();
+      displayAllPlants(data.plants);
+      const catBtn = document.getElementById(`cat-btn-${id}`);
+      catBtn.classList.add("active1");
+      spinner(false);
     });
-}
+};
+
+// details in modal
 const detailParent = document.getElementById("detail-parent");
-const loadDetails = (plantId)=>{
+const loadDetails = (plantId) => {
   const url = `https://openapi.programming-hero.com/api/plant/${plantId}`;
-fetch(url)
-  .then(res=> res.json())
-  .then(data=> {
-my_modal_5.showModal();
-detailParent.innerHTML = `
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      my_modal_5.showModal();
+      detailParent.innerHTML = `
 <p class="font-semibold text-lg mb-2">${data.plants.name}</p>
 
      <figure class="rounded-md  mb-4 overflow-hidden">
@@ -174,12 +191,8 @@ detailParent.innerHTML = `
       </form>
     </div>
   `;
+    });
+};
 
-  })
-}
-
-
-
-
-categoriesLoad()
+categoriesLoad();
 loadAllPlants();
