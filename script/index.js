@@ -51,7 +51,48 @@ const loadAllPlants = ()=> {
     }); 
 
 }
+let i = 1;
+const cart = (name, price) => {
+ 
+ 
+const  priceInt = parseInt(price)
+let currentPrice = priceInt
+const cartParent = document.getElementById("cart-parent");
+const cartTray = document.createElement('div')
+cartTray.innerHTML = `
+ <div><p class="font-semibold text-[12px]">${name}</p>
+  <p class="text-[#1F2937] text-[12px]">৳${price}</p></div>
+  
+  <div onclick="clear()" id="clear-${i}" class="cursor-pointer">
+    <i class="fa-solid fa-xmark"></i>
+  </div>
+`;
 
+
+
+cartTray.classList.add('flex', 'justify-between', 'items-center', 'p-2', 'bg-[#F0FDF4]', 'rounded','mb-3')
+cartParent.appendChild(cartTray)
+
+const totalParent = document.getElementById('total')
+let currentTotal = parseInt(totalParent.innerText)
+let total = currentTotal + priceInt;
+
+totalParent.innerText = total
+ alert("Your item added to the cart");
+document.getElementById(`clear-${i}`).addEventListener("click", function () {
+  cartTray.innerHTML=""
+  cartTray.classList.remove('flex', 'justify-between', 'items-center', 'p-2', 'bg-[#F0FDF4]', 'rounded','mb-3')
+  const totalParent = document.getElementById("total");
+  let currentTotal = parseInt(totalParent.innerText);
+  let total = currentTotal - priceInt;
+
+  totalParent.innerText = total;
+});
+
+i++
+
+
+};
 const displayAllPlants = (plants) => {
   const plantsContainer = document.getElementById("plants-container");
   plantsContainer.innerHTML = "";
@@ -74,7 +115,7 @@ const displayAllPlants = (plants) => {
      
     </div>
     <div class="card-actions justify-center align-bottom mt-3 w-full">
-      <button class="btn w-full bg-[#15803D] text-white rounded-[99px]">Add to Cart</button>
+      <button onclick="cart('${plant.name}', '${plant.price}')" class="btn w-full bg-[#15803D] text-white rounded-[99px]">Add to Cart</button>
     </div>
   </div>
 </div>`;
